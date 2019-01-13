@@ -39,6 +39,7 @@ class GroupHelper:
 
     def select_first_group(self):
         # select first group
+        wd = self.app.wd
         wd.find_element_by_name("selected[]").click()
 
     def open_groups_page(self):
