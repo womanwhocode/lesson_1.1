@@ -52,12 +52,10 @@ class GroupHelper:
         self.fill_group_form(group)
         wd.find_element_by_name("update").click()
 
-    def modify_first_group(self):
+    def modify_first_group(self, new_group_data):
         wd = self.app.wd
         wd.get("http://localhost/addressbook/group.php")
-
-
-
+        self.fill_group_form(new_group_data)
         wd.find_element_by_name("update").click()
 
 
