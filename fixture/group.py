@@ -61,3 +61,8 @@ class GroupHelper:
         wd.get("http://localhost/addressbook/group.php")
 
 
+
+        wd.find_element_by_name("update").click()
+
+
+
