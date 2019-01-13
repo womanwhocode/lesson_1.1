@@ -28,11 +28,14 @@ class GroupHelper:
     def delete_first_group(self):
         wd = self.app.wd
         self.open_groups_page()
-        # select first group
-        wd.find_element_by_name("selected[]").click()
+        self.select_first_group()
         # submit deletion
         wd.find_element_by_name("delete").click()
         self.return_to_group_page()
+
+    def select_first_group(self):
+        # select first group
+        wd.find_element_by_name("selected[]").click()
 
     def open_groups_page(self):
         wd = self.app.wd
@@ -52,5 +55,9 @@ class GroupHelper:
         wd.find_element_by_name("group_footer").clear()
         wd.find_element_by_name("group_footer").send_keys(group.footer)
         wd.find_element_by_name("update").click()
+
+    def modify_first_group(self):
+        wd = self.app.wd
+        wd.get("http://localhost/addressbook/group.php")
 
 
