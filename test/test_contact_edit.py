@@ -2,7 +2,7 @@
 from model.contact import Contact
 
 def test_contact_edit(app):
-    app.group.open_home_page()
+    app.group.open_group_page()
     app.session.login(username="admin", password="secret")
     app.contact.open_contact_page()
     app.contact.edit_contact(Contact(user_firstname="alena_new", user_middlename="z", user_lastname="y", user_nickname="alenaomg", photo_path="/Users/alyona_zaytseva/Downloads/IMG_5814.JPG", user_title="piter", company_name="nestle", address="tujx", home_address="derlin", mobile_phone="7788",

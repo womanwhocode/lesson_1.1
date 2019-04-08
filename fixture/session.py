@@ -5,7 +5,7 @@ class SessionHelper:
 
     def login(self, username, password):
         wd = self.app.wd
-        wd.get("http://localhost/addressbook/group.php")
+        wd.get("http://localhost/addressbook/")
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
         wd.find_element_by_name("user").send_keys(username)
@@ -26,10 +26,12 @@ class SessionHelper:
 
     def is_logged_in(self):
         wd = self.app.wd
+        wd.get("http://localhost/addressbook/")
         return len(wd.find_elements_by_link_text("Logout"))
 
     def is_logged_in_as(self, username):
         wd = self.app.wd
+        wd.get("http://localhost/addressbook/")
         return wd.find_element_by_xpath("//div[@id='top']/form/b").text == "("+username+")"
 
     def ensure_login(self, username, password):
