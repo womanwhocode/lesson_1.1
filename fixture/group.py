@@ -62,10 +62,13 @@ class GroupHelper:
         self.fill_group_form(group)
         wd.find_element_by_name("update").click()
 
-    def modify_first_group(self, new_group_data):
+    def modify_first_group(self):
+        self.modify_group_by_index(0)
+
+    def modify_group_by_index(self, index, new_group_data):
         wd = self.app.wd
         wd.get("http://localhost/addressbook/group.php")
-        self.select_first_group()
+        self.select_group_by_index(index)
         wd.find_element_by_name("edit").click()
         self.fill_group_form(new_group_data)
         wd.find_element_by_name("update").click()
