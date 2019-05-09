@@ -86,10 +86,10 @@ class ContactHelper:
 
     contact_cache = None
 
-    def get_contact_list(self):
-        if self.contact_cache is None:
-            wd = self.app.wd
-            self.open_contact_page()
-            self.contact_cache = []
+      def get_contact_list(self):
+           if self.contact_cache is None:
+               wd = self.app.wd
+               self.open_home_page()
+               self.contact_cache = []
             for element in wd.find_elements_by_css_selector("span.group"):
 
