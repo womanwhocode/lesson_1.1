@@ -6,5 +6,8 @@ def test_delete_some_contact(app):
         app.contact.create(Contact(user_firstname="alena new new"))
     old_contacts = app.contact.get_contact_list()
     app.contact.delete_first_contact()
-    new_contacts = app.get_contact_list()
+    new_contacts = app.contact.get_contact_list()
     assert len(old_contacts) - 1 == len(new_contacts)
+    old_contacts[0:1] = []
+    assert old_contacts == new_contacts
+
