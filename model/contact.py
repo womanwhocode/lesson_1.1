@@ -33,7 +33,7 @@ class Contact:
         self.id = id
 
     def __eq__(self, other):
-        return self.id == other.id
+        return (self.id is None or other.id is None or self.id == other.id) and self.user_firstname == other.user_firstname
 
     def __repr__(self):
         return "%s:%s" % (self.id, self.user_firstname)
