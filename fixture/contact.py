@@ -95,5 +95,3 @@ class ContactHelper:
             contacts.append(Contact(id=id, user_firstname=text))
         return contacts
 
-
-
