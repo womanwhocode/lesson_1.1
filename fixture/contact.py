@@ -10,7 +10,7 @@ class ContactHelper:
         wd = self.app.wd
         wd.get("http://localhost/addressbook/index.php")
 
-    def open_contact_page(self):
+    def open_create_contact_page(self):
         wd = self.app.wd
         wd.find_element_by_xpath("(//img[@alt='Edit'])[2]").click()
         wd.find_element_by_xpath("//div[@id='nav']/ul/li[2]/a").click()
@@ -18,8 +18,9 @@ class ContactHelper:
     def create(self, contact):
         wd = self.app.wd
         self.fill_contact_form(contact)
+        self.send_photo(contact)
         self.choose_data(contact)
-        wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
+        self.submit_add_contact()
 
     def fill_contact_form(self, contact):
         wd = self.app.wd
@@ -27,8 +28,6 @@ class ContactHelper:
         self.change_field("middlename", contact.user_middlename)
         self.change_field("lastname", contact.user_lastname)
         self.change_field("nickname", contact.user_nickname)
-        wd.find_element_by_name("photo").clear()
-        wd.find_element_by_name("photo").send_keys(contact.photo_path)
         self.change_field("title", contact.user_title)
         self.change_field("company", contact.company_name)
         self.change_field("address", contact.address)
@@ -45,6 +44,15 @@ class ContactHelper:
         self.change_field("address2", contact.address_2)
         self.change_field("phone2", contact.phone_2)
         self.change_field("notes", contact.notes)
+
+    def submit_add_contact(self):
+        wd = self.app.wd
+        wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
+
+    def send_photo(self, contact):
+        wd = self.app.wd
+        wd.find_element_by_name("photo").clear()
+        wd.find_element_by_name("photo").send_keys(contact.photo_path)
 
     def choose_data(self, contact):
         wd = self.app.wd
@@ -82,7 +90,7 @@ class ContactHelper:
 
     def count(self):
         wd = self.app.wd
-        self.open_contact_page()
+        self.open_create_contact_page()
         return len(wd.find_elements_by_name("selected[]"))
 
     def get_contact_list(self):
