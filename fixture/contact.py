@@ -1,6 +1,7 @@
 from selenium.webdriver.support.ui import Select
 from model.contact import Contact
 
+
 class ContactHelper:
 
     def __init__(self, app):
@@ -21,6 +22,7 @@ class ContactHelper:
         self.send_photo(contact)
         self.choose_data(contact)
         self.submit_add_contact()
+        self.contact_cache = None
 
     def fill_contact_form(self, contact):
         wd = self.app.wd
@@ -81,6 +83,7 @@ class ContactHelper:
         wd.find_element_by_name("selected[]").click()
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         wd.switch_to_alert().accept()
+        self.contact_cache = None
 
     def modify_first_contact(self, contact):
         wd = self.app.wd
@@ -88,19 +91,25 @@ class ContactHelper:
         wd.find_element_by_xpath("//td[8]/a/img").click()
         self.fill_contact_form(contact)
         wd.find_element_by_name("update").click()
+        self.contact_cache = None
 
     def count(self):
         wd = self.app.wd
-        self.open_create_contact_page()
+        self.open_home_page()
         return len(wd.find_elements_by_name("selected[]"))
 
+    contact_cache = None
+
     def get_contact_list(self):
-        wd = self.app.wd
-        self.open_home_page()
-        contacts = []
-        for element in wd.find_elements_by_xpath("//tr[@name='entry']"):
-            id = element.find_element_by_xpath("./td[1]/input").get_attribute('value')
-            text = element.find_element_by_xpath("./td[3]").text
-            contacts.append(Contact(id=id, user_firstname=text))
-        return contacts
+        if self.contact_cache is None:
+            wd = self.app.wd
+            self.open_home_page()
+            self.contact_cache = []
+            for element in wd.find_elements_by_xpath("//tr[@name='entry']"):
+                id = element.find_element_by_xpath("./td[1]/input").get_attribute('value')
+                text = element.find_element_by_xpath("./td[3]").text
+                self.contact_cache.append(Contact(id=id, user_firstname=text))
+        return list(self.contact_cache)
+
+
 
