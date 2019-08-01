@@ -2,9 +2,9 @@ from sys import maxsize
 
 
 class Contact:
-    def __init__(self, user_firstname=None, user_middlename=None, user_lastname=None, user_nickname=None, photo_path=None, user_title=None, company_name=None, address=None, home_address=None, mobile_phone=None,
-                            work_phone=None, fax_phone=None, email_1=None, email_2=None, email_3=None, homepage=None, b_day=None, b_month=None, b_year=None, a_day=None,
-                            a_month=None, a_year=None, address_2=None, phone_2=None, notes=None, id=None):
+    def __init__(self, user_firstname=None, user_middlename=None, user_lastname=None, user_nickname=None, photo_path=None, user_title=None, company_name=None, address=None, home_phone=None, mobile_phone=None,
+                 work_phone=None, fax_phone=None, email_1=None, email_2=None, email_3=None, homepage=None, b_day=None, b_month=None, b_year=None, a_day=None,
+                 a_month=None, a_year=None, address_2=None, phone_2=None, notes=None, id=None):
         self.user_firstname = user_firstname
         self.user_middlename = user_middlename
         self.user_lastname = user_lastname
@@ -13,7 +13,7 @@ class Contact:
         self.user_title = user_title
         self.company_name = company_name
         self.address = address
-        self.home_address = home_address
+        self.home_phone = home_phone
         self.mobile_phone = mobile_phone
         self.work_phone = work_phone
         self.fax_phone = fax_phone

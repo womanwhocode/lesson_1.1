@@ -1,5 +1,6 @@
 from selenium.webdriver.support.ui import Select
 from model.contact import Contact
+import re
 
 
 class ContactHelper:
@@ -33,7 +34,7 @@ class ContactHelper:
         self.change_field("title", contact.user_title)
         self.change_field("company", contact.company_name)
         self.change_field("address", contact.address)
-        self.change_field("home", contact.home_address)
+        self.change_field("home", contact.home_phone)
         self.change_field("mobile", contact.mobile_phone)
         self.change_field("work", contact.work_phone)
         self.change_field("fax", contact.fax_phone)
@@ -119,12 +120,42 @@ class ContactHelper:
         if self.contact_cache is None:
             wd = self.app.wd
             self.open_home_page()
-            self.contact_cache = []
+            contacts = []
             for element in wd.find_elements_by_xpath("//tr[@name='entry']"):
                 id = element.find_element_by_xpath("./td[1]/input").get_attribute('value')
-                text = element.find_element_by_xpath("./td[3]").text
-                self.contact_cache.append(Contact(id=id, user_firstname=text))
-        return list(self.contact_cache)
+                firstname = element.find_element_by_xpath("./td[3]").text
+                all_phones = element.find_element_by_xpath("./td[6]").text.splitlines()
+                contacts.append(Contact(id=id, user_firstname=firstname, home_phone=all_phones[0],
+                                        mobile_phone=all_phones[1], work_phone=all_phones[2], fax_phone=all_phones[3]))
+            return list(contacts)
+
+    def open_contact_to_edit_by_index(self, index):
+        wd = self.app.wd
+        self.open_home_page()
+        self.select_contact_by_index(index)
+        wd.find_element_by_xpath("//td[8]/a/img").click()
+
+    def get_contact_info_from_edit_page(self, index):
+        wd = self.app.wd
+        self.open_contact_to_edit_by_index(index)
+        firstname = wd.find_element_by_name("firstname").get_attribute("value")
+        lastname = wd.find_element_by_name("lastname").get_attribute("value")
+        id = wd.find_element_by_name("id").get_attribute("value")
+        home_phone = wd.find_element_by_name("home").get_attribute("value")
+        mobile_phone = wd.find_element_by_name("mobile").get_attribute("value")
+        work_phone = wd.find_element_by_name("work").get_attribute("value")
+        fax_phone = wd.find_element_by_name("phone2").get_attribute("value")
+        return Contact(user_firstname=firstname, user_lastname=lastname, home_phone=home_phone, mobile_phone=mobile_phone, work_phone=work_phone, fax_phone=fax_phone, id=id)
+
+    def get_contact_from_view_page(self, index):
+        wd = self.app.wd
+        self.select_contact_by_index(index)
+        text = wd.find_element_by_id("content").text
+        home_phone = re.search("H: (.*)", text).group(1)
+        work_phone = re.search("W: (.*)", text).group(1)
+        mobile_phone = re.search("M: (.*)", text).group(1)
+        fax_phone = re.search("P: (.*)", text).group(1)
+        return Contact(home_phone=home_phone, mobile_phone=mobile_phone, work_phone=work_phone, fax_phone=fax_phone, id=id)
 
 
 
