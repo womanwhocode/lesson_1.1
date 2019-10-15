@@ -1,6 +1,7 @@
 from selenium.webdriver.support.ui import Select
 from model.contact import Contact
 import re
+from random import randrange
 
 
 class ContactHelper:
@@ -124,10 +125,36 @@ class ContactHelper:
             for element in wd.find_elements_by_xpath("//tr[@name='entry']"):
                 id = element.find_element_by_xpath("./td[1]/input").get_attribute('value')
                 firstname = element.find_element_by_xpath("./td[3]").text
-                all_phones = element.find_element_by_xpath("./td[6]").text.splitlines()
-                contacts.append(Contact(id=id, user_firstname=firstname, home_phone=all_phones[0],
-                                        mobile_phone=all_phones[1], work_phone=all_phones[2], fax_phone=all_phones[3]))
+                all_phones = element.find_element_by_xpath("./td[6]").text
+                contacts.append(Contact(id=id, user_firstname=firstname, all_phones_from_home_page=all_phones))
             return list(contacts)
+
+    def get_contact_info_home_page_by_random(self):
+        wd = self.app.wd
+        self.open_home_page()
+        contacts = wd.find_elements_by_xpath("//tr[@name='entry']")
+        random_index = randrange(len(contacts))
+        contact = contacts[random_index]
+        id = contact.find_element_by_xpath("./td[1]/input").get_attribute('value')
+        first_name = contact.find_element_by_xpath("./td[3]").text
+        last_name = contact.find_element_by_xpath("./td[2]").text
+        address = contact.find_element_by_xpath("./td[4]").text
+        all_emails = contact.find_element_by_xpath("./td[5]").text
+        all_phones = contact.find_element_by_xpath("./td[6]").text
+        contact.append(Contact(id=id, user_firstname=first_name, user_lastname=last_name, address=address,
+                               all_emails_from_home_page=all_emails,
+                               all_phones_from_home_page=all_phones))
+        return Contact(id=id, user_firstname=first_name, user_lastname=last_name, address=address,
+                               all_emails_from_home_page=all_emails,
+                               all_phones_from_home_page=all_phones)
+
+    def get_contact_info_edit_page_by_random(self, contact_from_home_page):
+        wd = self.app.wd
+        contacts = wd.find_elements_by_xpath("//tr[@name='entry']")
+        index = contacts.index(contact_from_home_page)
+        self.open_home_page()
+        wd.find_element_by_xpath("//td["+index+"]/a/img").click()
+
 
     def open_contact_to_edit_by_index(self, index):
         wd = self.app.wd
@@ -145,7 +172,8 @@ class ContactHelper:
         mobile_phone = wd.find_element_by_name("mobile").get_attribute("value")
         work_phone = wd.find_element_by_name("work").get_attribute("value")
         fax_phone = wd.find_element_by_name("phone2").get_attribute("value")
-        return Contact(user_firstname=firstname, user_lastname=lastname, home_phone=home_phone, mobile_phone=mobile_phone, work_phone=work_phone, fax_phone=fax_phone, id=id)
+        return Contact(user_firstname=firstname, user_lastname=lastname, home_phone=home_phone, mobile_phone=mobile_phone,
+                       work_phone=work_phone, fax_phone=fax_phone, id=id)
 
     def get_contact_from_view_page(self, index):
         wd = self.app.wd

@@ -2,8 +2,10 @@ from sys import maxsize
 
 
 class Contact:
-    def __init__(self, user_firstname=None, user_middlename=None, user_lastname=None, user_nickname=None, photo_path=None, user_title=None, company_name=None, address=None, home_phone=None, mobile_phone=None,
-                 work_phone=None, fax_phone=None, email_1=None, email_2=None, email_3=None, homepage=None, b_day=None, b_month=None, b_year=None, a_day=None,
+    def __init__(self, user_firstname=None, user_middlename=None, user_lastname=None, user_nickname=None, photo_path=None,
+                 user_title=None, company_name=None, address=None, home_phone=None, mobile_phone=None,
+                 work_phone=None, fax_phone=None, all_emails_from_home_page=None,  email_1=None, email_2=None, email_3=None, all_phones_from_home_page=None,
+                 homepage=None, b_day=None, b_month=None, b_year=None, a_day=None,
                  a_month=None, a_year=None, address_2=None, phone_2=None, notes=None, id=None):
         self.user_firstname = user_firstname
         self.user_middlename = user_middlename
@@ -13,10 +15,12 @@ class Contact:
         self.user_title = user_title
         self.company_name = company_name
         self.address = address
+        self.all_phones_from_home_page = all_phones_from_home_page
         self.home_phone = home_phone
         self.mobile_phone = mobile_phone
         self.work_phone = work_phone
         self.fax_phone = fax_phone
+        self.all_emails_from_home_page = all_emails_from_home_page
         self.email_1 = email_1
         self.email_2 = email_2
         self.email_3 = email_3
